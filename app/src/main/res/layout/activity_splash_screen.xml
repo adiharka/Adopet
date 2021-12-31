@@ -11,8 +11,8 @@
         android:id="@+id/imageView"
         android:layout_width="357dp"
         android:layout_height="191dp"
-        android:layout_marginBottom="212dp"
-        android:src="@drawable/splashscreen"
+        android:layout_marginBottom="150dp"
+        android:src="@mipmap/ic_launcher_round"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -31,20 +31,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView"
         app:layout_constraintVertical_bias="0.125" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/buttonNext"
-        android:layout_width="230dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="188dp"
-        android:fontFamily="sans-serif-medium"
-        android:text="Start Adopting"
-        android:textColor="@color/purple_200"
-        android:textStyle="bold"
-        app:backgroundTint="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -39,6 +39,9 @@ class ProfileUpdate : AppCompatActivity() {
                 Toast.makeText(this, "Error, harap coba lagi", Toast.LENGTH_SHORT).show();
             }
         }
+        cancel_button.setOnClickListener {
+            finish()
+        }
         backBtn.setOnClickListener {
             finish()
         }

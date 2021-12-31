@@ -8,6 +8,8 @@ import com.kuliah.adopet.adapter.PetListAdapter
 import com.kuliah.adopet.database.DatabaseHandler
 import com.kuliah.adopet.model.PetModelClass
 import kotlinx.android.synthetic.main.activity_pet_added.*
+import kotlinx.android.synthetic.main.activity_pet_added.backBtn
+import kotlinx.android.synthetic.main.activity_pet_detail.*
 import kotlinx.android.synthetic.main.fragment_home.view.*
 
 class PetAdded : AppCompatActivity() {
@@ -30,6 +32,10 @@ class PetAdded : AppCompatActivity() {
             intent.putExtra("accID",acc_id_fix.text.toString());
             intent.putExtra("ID",id_fix.text.toString());
             startActivity(intent)
+        }
+
+        backBtn.setOnClickListener {
+            finish()
         }
     }
 }
