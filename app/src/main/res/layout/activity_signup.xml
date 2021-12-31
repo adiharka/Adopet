@@ -120,12 +120,14 @@
                 android:id="@+id/passForm"
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
+                android:inputType="textPassword"
                 android:hint="Your Password"
                 android:textSize="13sp"
                 android:textColorHint="#DCDCDC" />
         </LinearLayout>
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/signupBtn"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

@@ -97,19 +97,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
                 android:hint="Your Password"
+                android:inputType="textPassword"
                 android:textColorHint="#DCDCDC"
                 android:textSize="13dp" />
         </LinearLayout>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:text="Forgot Your Pasword?"
-            android:textAlignment="textEnd"
-            android:textColor="#EDEDED"
-            android:textSize="12dp"
-            android:textStyle="normal" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/loginBtn"

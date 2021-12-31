@@ -223,4 +223,22 @@ class DatabaseHandler(context: Context): SQLiteOpenHelper(context,
         return unameAccount
     }
 
+    // Create new Pet
+    fun createAdopt(accID:Int, name: String, category: String, address: String, x:String, y:String, sex: String, size: String, age: String, weight: String, type: String, vaccine: String, desc: String): Boolean {
+        val db = this.writableDatabase
+        val addQuery = "INSERT INTO $TABLE_PET($KEY_PET_ACCOUNT_ID, $KEY_NAME, $KEY_CATEGORY, $KEY_ADDRESS, $KEY_X, $KEY_Y, $KEY_SEX, $KEY_SIZE, $KEY_AGE, $KEY_WEIGHT, $KEY_TYPE, $KEY_VACCINE, $KEY_DESCRIPTION) " +
+                "values($accID, '$name', '$category', '$address', '$x', '$y', '$sex', '$size', '$age', '$weight', '$type', '$vaccine', '$desc');"
+        val cursor: Cursor = db.rawQuery(addQuery, null)
+
+        Log.d("CREATION", "Create pet, from acc ID:$accID")
+        Log.d("CREATION", addQuery)
+        try {
+            if (cursor.moveToFirst()) {
+            }
+        } finally {
+            cursor.close()
+        }
+        db.close()
+        return true
+    }
 }

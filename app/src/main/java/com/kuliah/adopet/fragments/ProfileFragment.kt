@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.kuliah.adopet.*
+import com.kuliah.adopet.database.DatabaseHandler
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.fragment_home.view.*
 import kotlinx.android.synthetic.main.fragment_profile.*
@@ -41,16 +42,19 @@ class AccountFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view: View = inflater.inflate(R.layout.fragment_profile, container, false)
+        val databaseHandler = DatabaseHandler(requireContext())
+        val accID = databaseHandler.checkAccount()
 
         view.editProfileBtn.setOnClickListener{
             val intent = Intent(context, ProfileUpdate::class.java)
             startActivity(intent)
         }
-        view.profileBtn.setOnClickListener{
+
+        view.logoutBtn.setOnClickListener {
+            databaseHandler.logoutAccount(accID)
             val intent = Intent(context, Login::class.java)
             startActivity(intent)
         }
-
         return view
     }
 
