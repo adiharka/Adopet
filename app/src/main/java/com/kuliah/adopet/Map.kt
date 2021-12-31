@@ -18,11 +18,15 @@ class Map : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_map)
 
+        val extras = intent.extras
+        var latitude = extras?.getString("x")
+        var longitude = extras?.getString("y")
+
         mapFragment = map as SupportMapFragment
         mapFragment.getMapAsync(OnMapReadyCallback {
             googleMap = it
 
-            var location1 = LatLng(12.0, 13.0)
+            var location1 = LatLng(latitude!!.toDouble(), longitude!!.toDouble())
             googleMap.addMarker(MarkerOptions().position(location1).title("Owner Location"))
             googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(location1,15f))
         })

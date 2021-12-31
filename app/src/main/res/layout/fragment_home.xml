@@ -24,11 +24,11 @@
                 android:layout_width="165dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:background="@drawable/btn_primary"
+                android:background="@drawable/btn_tertiary"
                 android:fontFamily="sans-serif-medium"
                 android:paddingHorizontal="45dp"
                 android:text="cat"
-                android:textColor="#fff"
+                android:textColor="#4B3588"
                 android:textStyle="bold"
                  />
 
@@ -41,14 +41,14 @@
                 android:fontFamily="sans-serif-medium"
                 android:paddingHorizontal="45dp"
                 android:text="dog"
-                android:textColor="@color/black"
+                android:textColor="#4B3588"
                 android:textStyle="bold" />
 
         </RelativeLayout>
 
         <ListView
             android:id="@+id/pet_listview"
-            android:layout_marginBottom="40dp"
+            android:layout_marginTop="16dp"
             android:layout_marginHorizontal="16dp"
             android:paddingTop="36dp"
             android:paddingBottom="36dp"

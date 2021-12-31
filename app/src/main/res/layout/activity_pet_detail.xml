@@ -9,7 +9,8 @@
     <ImageView
         android:id="@+id/img"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="350dp"
+        android:scaleType="centerCrop"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         android:src="@drawable/splashscreen"
@@ -25,159 +26,180 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"/>
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="-16dp"
-        android:padding="16dp"
-        android:background="@drawable/cardwhite"
-        app:layout_constraintTop_toBottomOf="@+id/img"
-        android:orientation="vertical"
-        >
-        <TextView
-            android:id="@+id/petName"
+        app:layout_constraintTop_toBottomOf="@+id/img">
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/purpy10"
-            android:text="Nama Hewan"
-            android:textSize="24sp"/>
-
-        <TextView
-            android:id="@+id/petVaccine"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/purpy10"
-            android:text="Status : Vaccinated"/>
-
-        <TextView
-            android:id="@+id/petOwner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/purpy10"
-            android:text="Owner : Quenz quenzz"/>
-
-        <HorizontalScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scrollbars="none"
-            android:layout_marginVertical="8dp"
+            android:layout_height="0dp"
+            android:padding="16dp"
+            android:background="@drawable/cardwhite"
+            android:orientation="vertical"
             >
-            <LinearLayout
+            <TextView
+                android:id="@+id/petName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/purpy10"
+                android:text="Nama Hewan"
+                android:textSize="24sp"/>
+
+            <TextView
+                android:id="@+id/petVaccine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:textColor="@color/purpy10"
+                android:gravity="center_vertical"
+                android:drawablePadding="8dp"
+                android:drawableStart="@drawable/ic_medical"
+                android:text="Status : Vaccinated"/>
+
+            <TextView
+                android:id="@+id/petOwner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/purpy10"
+                android:gravity="center_vertical"
+                android:drawablePadding="4dp"
+                android:drawableStart="@drawable/ic_person"
+                android:text="Owner : Quenz quenzz"/>
+            <TextView
+                android:id="@+id/petLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:drawablePadding="4dp"
+                android:drawableStart="@drawable/ic_location"
+                android:textColor="@color/purpy10"
+                android:text="Location : Quenz quenzz"/>
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="none"
+                android:layout_marginVertical="16dp"
+                >
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:divider="@drawable/dividervertical"
+                    android:showDividers="middle">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="6dp"
+                        android:background="@drawable/cardpurple"
+                        android:gravity="center_horizontal"
+                        >
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Age"
+                            android:textColor="@color/white"
+                            android:textSize="18sp"/>
+                        <TextView
+                            android:id="@+id/petAge"
+                            android:layout_width="75dp"
+                            android:layout_height="wrap_content"
+                            android:textAlignment="center"
+                            android:textColor="@color/white"
+                            android:text="3 months"
+                            />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="6dp"
+                        android:background="@drawable/cardpurple"
+                        android:gravity="center_horizontal"
+                        >
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Sex"
+                            android:textColor="@color/white"
+                            android:textSize="18sp"/>
+                        <TextView
+                            android:id="@+id/petSex"
+                            android:layout_width="75dp"
+                            android:layout_height="wrap_content"
+                            android:textAlignment="center"
+                            android:textColor="@color/white"
+                            android:text="3 months"
+                            />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="6dp"
+                        android:background="@drawable/cardpurple"
+                        android:gravity="center_horizontal"
+                        >
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Weight"
+                            android:textColor="@color/white"
+                            android:textSize="18sp"/>
+                        <TextView
+                            android:id="@+id/petWeight"
+                            android:layout_width="75dp"
+                            android:layout_height="wrap_content"
+                            android:textAlignment="center"
+                            android:textColor="@color/white"
+                            android:text="1 kg"
+                            />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="6dp"
+                        android:background="@drawable/cardpurple"
+                        android:gravity="center_horizontal"
+                        >
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Size"
+                            android:textColor="@color/white"
+                            android:textSize="18sp"/>
+                        <TextView
+                            android:id="@+id/petSize"
+                            android:layout_width="75dp"
+                            android:layout_height="wrap_content"
+                            android:textAlignment="center"
+                            android:textColor="@color/white"
+                            android:text="Small"
+                            />
+                    </LinearLayout>
+                </LinearLayout>
+            </HorizontalScrollView>
+
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:divider="@drawable/dividervertical"
-                android:showDividers="middle">
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="6dp"
-                    android:background="@drawable/cardpurple"
-                    android:gravity="center_horizontal"
-                    >
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Age"
-                        android:textColor="@color/white"
-                        android:textSize="18sp"/>
-                    <TextView
-                        android:id="@+id/petAge"
-                        android:layout_width="75dp"
-                        android:layout_height="wrap_content"
-                        android:textAlignment="center"
-                        android:textColor="@color/white"
-                        android:text="3 months"
-                        />
-                </LinearLayout>
+                android:textColor="@color/purpy10"
+                android:text="About"
+                android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/petDesc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/purpy10"
+                android:text="Lorem ipsum dorado"/>
+        </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="6dp"
-                    android:background="@drawable/cardpurple"
-                    android:gravity="center_horizontal"
-                    >
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Sex"
-                        android:textColor="@color/white"
-                        android:textSize="18sp"/>
-                    <TextView
-                        android:id="@+id/petSex"
-                        android:layout_width="75dp"
-                        android:layout_height="wrap_content"
-                        android:textAlignment="center"
-                        android:textColor="@color/white"
-                        android:text="3 months"
-                        />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="6dp"
-                    android:background="@drawable/cardpurple"
-                    android:gravity="center_horizontal"
-                    >
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Weight"
-                        android:textColor="@color/white"
-                        android:textSize="18sp"/>
-                    <TextView
-                        android:id="@+id/petWeight"
-                        android:layout_width="75dp"
-                        android:layout_height="wrap_content"
-                        android:textAlignment="center"
-                        android:textColor="@color/white"
-                        android:text="1 kg"
-                        />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="6dp"
-                    android:background="@drawable/cardpurple"
-                    android:gravity="center_horizontal"
-                    >
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Sex"
-                        android:textColor="@color/white"
-                        android:textSize="18sp"/>
-                    <TextView
-                        android:id="@+id/petSize"
-                        android:layout_width="75dp"
-                        android:layout_height="wrap_content"
-                        android:textAlignment="center"
-                        android:textColor="@color/white"
-                        android:text="Small"
-                        />
-                </LinearLayout>
-            </LinearLayout>
-        </HorizontalScrollView>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/purpy10"
-            android:text="About"
-            android:textStyle="bold"/>
-        <TextView
-            android:id="@+id/petDesc"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/purpy10"
-            android:text="Lorem ipsum dorado"/>
-    </LinearLayout>
+    </ScrollView>
 
     <LinearLayout
         app:layout_constraintBottom_toBottomOf="parent"

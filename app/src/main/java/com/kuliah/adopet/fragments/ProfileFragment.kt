@@ -45,6 +45,8 @@ class AccountFragment : Fragment() {
         val databaseHandler = DatabaseHandler(requireContext())
         val accID = databaseHandler.checkAccount()
 
+        view.name.text = databaseHandler.getUname(accID)
+
         view.editProfileBtn.setOnClickListener{
             val intent = Intent(context, ProfileUpdate::class.java)
             startActivity(intent)

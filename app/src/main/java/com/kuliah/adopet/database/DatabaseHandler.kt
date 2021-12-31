@@ -24,10 +24,6 @@ class DatabaseHandler(context: Context): SQLiteOpenHelper(context,
         private val KEY_PHONE = "phone"
         private val KEY_LOGGED_IN = "logged_in"
 
-        private val KEY_ADDRESS = "address"
-        private val KEY_X = "x"
-        private val KEY_Y = "y"
-
         private val TABLE_PET = "PetTable"
         private val KEY_PET_ID = "pet_id"
         private val KEY_PET_ACCOUNT_ID = "account_id"
@@ -40,6 +36,9 @@ class DatabaseHandler(context: Context): SQLiteOpenHelper(context,
         private val KEY_TYPE = "type"
         private val KEY_VACCINE = "vaccine"
         private val KEY_DESCRIPTION = "description"
+        private val KEY_ADDRESS = "address"
+        private val KEY_X = "x"
+        private val KEY_Y = "y"
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
@@ -47,7 +46,7 @@ class DatabaseHandler(context: Context): SQLiteOpenHelper(context,
         // creating table with fields
         val CREATE_ACCOUNT_TABLE =
             ("CREATE TABLE $TABLE_ACCOUNT($KEY_ACCOUNT_ID INTEGER PRIMARY KEY, $KEY_UNAME TEXT, $KEY_PASSWORD TEXT, " +
-                    "$KEY_EMAIL TEXT, $KEY_ADDRESS TEXT, $KEY_X TEXT, $KEY_Y TEXT, $KEY_LOGGED_IN INTEGER)")
+                    "$KEY_EMAIL TEXT, $KEY_PHONE TEXT, $KEY_LOGGED_IN INTEGER)")
         db?.execSQL(CREATE_ACCOUNT_TABLE)
 
         val CREATE_PET_TABLE =
@@ -78,7 +77,7 @@ class DatabaseHandler(context: Context): SQLiteOpenHelper(context,
             return false
         } else {
             val addQuery =
-                "INSERT INTO $TABLE_ACCOUNT($KEY_EMAIL, $KEY_PASSWORD, $KEY_UNAME, $KEY_LOGGED_IN) values('$email', '$pass', '$uname', -1);"
+                "INSERT INTO $TABLE_ACCOUNT($KEY_EMAIL, $KEY_PASSWORD, $KEY_UNAME, $KEY_PHONE, $KEY_LOGGED_IN) values('$email', '$pass', '$uname', '', -1);"
             val cursor: Cursor = db.rawQuery(addQuery, null)
 
             Log.d("CREATION", "Create account, uname:$uname, email:$email, pass:$pass")
@@ -97,34 +96,22 @@ class DatabaseHandler(context: Context): SQLiteOpenHelper(context,
     }
 
     // Update akun
-    fun updateAccount(id:Int, pass: String, uname: String, phone:String, address:String, x:String, y:String): Boolean {
+    fun updateAccount(accID:Int, pass: String, uname: String, phone:String): Boolean {
         val db = this.writableDatabase
-        val getQuery = "SELECT * FROM $TABLE_ACCOUNT WHERE $KEY_EMAIL = '$uname' WHERE NOT $KEY_ACCOUNT_ID = $id;"
-        val cursorCheck: Cursor = db.rawQuery(getQuery, null)
-//        val res: Int
-        if (cursorCheck.count > 0) {
-            Log.d("CREATION", "Failed create account, $uname used")
-            cursorCheck.close()
-            db.close()
-            return false
-        } else {
-            val addQuery =
-                "UPDATE $TABLE_ACCOUNT SET $KEY_UNAME = $uname, $KEY_PASSWORD = $pass, $KEY_PHONE = $phone, $KEY_ADDRESS = $address, $KEY_X = $x, $KEY_Y = $y WHERE $KEY_ACCOUNT_ID = $id;"
-            val cursor: Cursor = db.rawQuery(addQuery, null)
+        val updateQuery =
+            "UPDATE $TABLE_ACCOUNT SET $KEY_UNAME = '$uname', $KEY_PASSWORD = '$pass', $KEY_PHONE = '$phone' WHERE $KEY_ACCOUNT_ID = $accID;"
+        val cursor = db.rawQuery(updateQuery, null)
 
-            Log.d("CREATION", "Update account, uname:$uname, pass:$pass")
-            Log.d("CREATION", addQuery)
-            Log.d("CREATION", getQuery)
-            cursorCheck.close()
-            try {
-                if (cursor.moveToFirst()) {
-                }
-            } finally {
-                cursor.close()
+        Log.d("CREATION", "Update account, uname:$uname, pass:$pass")
+        Log.d("CREATION", updateQuery)
+        try {
+            if (cursor.moveToFirst()) {
             }
-            db.close()
-            return true
+        } finally {
+            cursor.close()
         }
+        db.close()
+        return true
     }
 
     // Login akun
@@ -225,15 +212,40 @@ class DatabaseHandler(context: Context): SQLiteOpenHelper(context,
         return unameAccount
     }
 
+    fun getPhone(id: Int): String {
+        val db = this.readableDatabase
+
+        val getQuery = "SELECT * FROM $TABLE_ACCOUNT WHERE $KEY_ACCOUNT_ID = $id;"
+        val cursor: Cursor = db.rawQuery(getQuery, null)
+        var phoneAccount = ""
+        if (cursor.count > 0) {
+            if (cursor.moveToFirst()) {
+                do {
+                    phoneAccount = cursor.getString(cursor.getColumnIndexOrThrow(KEY_PHONE))
+                } while (cursor.moveToNext())
+            }
+        }
+        cursor.close()
+        db.close()
+        return phoneAccount
+    }
+
     // Create new Pet
-    fun createAdopt(accID:Int, name: String, category: String, address: String, x:String, y:String, sex: String, size: String, age: String, weight: String, type: String, vaccine: String, desc: String): Boolean {
+    fun createAdopt(accID:Int, name: String, category: String, address: String, x:String, y:String,
+                    sex: String, size: String, age: String, weight: String, type: String, vaccine: String,
+                    desc: String, method: String= "CREATE"): Boolean {
         val db = this.writableDatabase
-        val addQuery = "INSERT INTO $TABLE_PET($KEY_PET_ACCOUNT_ID, $KEY_NAME, $KEY_CATEGORY, $KEY_ADDRESS, $KEY_X, $KEY_Y, $KEY_SEX, $KEY_SIZE, $KEY_AGE, $KEY_WEIGHT, $KEY_TYPE, $KEY_VACCINE, $KEY_DESCRIPTION) " +
+        var crudQuery = "INSERT INTO $TABLE_PET($KEY_PET_ACCOUNT_ID, $KEY_NAME, $KEY_CATEGORY, $KEY_ADDRESS, $KEY_X, $KEY_Y, $KEY_SEX, $KEY_SIZE, $KEY_AGE, $KEY_WEIGHT, $KEY_TYPE, $KEY_VACCINE, $KEY_DESCRIPTION) " +
                 "values($accID, '$name', '$category', '$address', '$x', '$y', '$sex', '$size', '$age', '$weight', '$type', '$vaccine', '$desc');"
-        val cursor: Cursor = db.rawQuery(addQuery, null)
+        if (method == "UPDATE") {
+            crudQuery = "UPDATE $TABLE_PET SET $KEY_NAME = '$name', $KEY_CATEGORY = '$category', $KEY_ADDRESS = '$address', " +
+                    "$KEY_X = '$x', $KEY_Y = '$y', $KEY_SEX = '$sex', $KEY_SIZE = '$size', $KEY_AGE = '$age', $KEY_WEIGHT = '$weight'," +
+                    "$KEY_TYPE = '$type', $KEY_VACCINE = '$vaccine', $KEY_DESCRIPTION = '$desc' WHERE $KEY_PET_ID = $accID;"
+        }
+        val cursor: Cursor = db.rawQuery(crudQuery, null)
 
         Log.d("CREATION", "Create pet, from acc ID:$accID")
-        Log.d("CREATION", addQuery)
+        Log.d("CREATION", crudQuery)
         try {
             if (cursor.moveToFirst()) {
             }
@@ -254,6 +266,8 @@ class DatabaseHandler(context: Context): SQLiteOpenHelper(context,
             selectQuery = "SELECT * FROM $TABLE_PET WHERE $KEY_CATEGORY = 'Cat';"
         } else if (Filter == "Account") {
             selectQuery = "SELECT * FROM $TABLE_PET WHERE $KEY_PET_ACCOUNT_ID = $AccID;"
+        } else if (Filter == "ID") {
+            selectQuery = "SELECT * FROM $TABLE_PET WHERE $KEY_PET_ID = $AccID;"
         }
         val db = this.readableDatabase
         var cursor: Cursor? = null
@@ -278,6 +292,7 @@ class DatabaseHandler(context: Context): SQLiteOpenHelper(context,
                     age = cursor.getString(cursor.getColumnIndexOrThrow(KEY_AGE)),
                     weight = cursor.getString(cursor.getColumnIndexOrThrow(KEY_WEIGHT)),
                     type = cursor.getString(cursor.getColumnIndexOrThrow(KEY_TYPE)),
+                    vaccine = cursor.getString(cursor.getColumnIndexOrThrow(KEY_VACCINE)),
                     desc = cursor.getString(cursor.getColumnIndexOrThrow(KEY_DESCRIPTION)),
                 )
                 empList.add(emp)
@@ -286,5 +301,20 @@ class DatabaseHandler(context: Context): SQLiteOpenHelper(context,
         cursor.close()
         db.close()
         return empList
+    }
+
+    // GET list pet
+    fun deletePet(id:Int) {
+        var deleteQuery = "DELETE FROM $TABLE_PET WHERE $KEY_PET_ID = $id"
+        val db = this.readableDatabase
+        val cursor: Cursor = db.rawQuery(deleteQuery, null)
+        try {
+            if (cursor.moveToFirst()) {
+            }
+        } finally {
+            cursor.close()
+        }
+        cursor.close()
+        db.close()
     }
 }

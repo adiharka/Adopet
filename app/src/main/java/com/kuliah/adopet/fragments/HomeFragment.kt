@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import com.kuliah.adopet.PetCRUD
 import com.kuliah.adopet.PetDetail
 import com.kuliah.adopet.R
@@ -17,6 +18,7 @@ import com.kuliah.adopet.database.DatabaseHandler
 import com.kuliah.adopet.model.PetModelClass
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_home.view.*
+import kotlinx.android.synthetic.main.pet_list.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -53,7 +55,7 @@ class HomeFragment : Fragment() {
         val databaseHandler: DatabaseHandler = DatabaseHandler(requireContext())
         var listView = view.pet_listview
 
-        var emp: List<PetModelClass> = databaseHandler.getPet("Cat")
+        var emp: List<PetModelClass> = databaseHandler.getPet()
         listView.adapter = PetListAdapter(requireContext(),R.layout.pet_list,emp, databaseHandler.checkAccount())
         Log.d("CREATION", "Bikin listview")
 
@@ -76,8 +78,12 @@ class HomeFragment : Fragment() {
 
         listView.setOnItemClickListener{parent, view, position, id ->
 //            Log.d("CREATION", forum_id)
+            val acc_id_fix = view.findViewById(R.id.acc_id) as TextView
+            val id_fix = view.findViewById(R.id.pet_id) as TextView
+
             val intent = Intent(context, PetDetail::class.java)
-//            intent.putExtra("forum_id",forum_id.text.toString());
+            intent.putExtra("accID",acc_id_fix.text.toString());
+            intent.putExtra("ID",id_fix.text.toString());
             startActivity(intent)
         }
 //
@@ -88,6 +94,7 @@ class HomeFragment : Fragment() {
 
         view.addBtn.setOnClickListener{
             val intent = Intent(context, PetCRUD::class.java)
+            intent.putExtra("ID", "");
             startActivity(intent)
         }
 

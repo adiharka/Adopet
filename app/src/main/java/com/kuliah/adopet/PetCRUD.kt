@@ -1,6 +1,7 @@
 package com.kuliah.adopet
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Address
 import android.location.Geocoder
@@ -13,7 +14,26 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.kuliah.adopet.database.DatabaseHandler
 import com.kuliah.adopet.databinding.ActivityPetCrudBinding
+import com.kuliah.adopet.model.PetModelClass
 import kotlinx.android.synthetic.main.activity_pet_crud.*
+import kotlinx.android.synthetic.main.activity_pet_crud.Female
+import kotlinx.android.synthetic.main.activity_pet_crud.L
+import kotlinx.android.synthetic.main.activity_pet_crud.M
+import kotlinx.android.synthetic.main.activity_pet_crud.Male
+import kotlinx.android.synthetic.main.activity_pet_crud.Pet_sex
+import kotlinx.android.synthetic.main.activity_pet_crud.Pet_size
+import kotlinx.android.synthetic.main.activity_pet_crud.Pet_vaksin
+import kotlinx.android.synthetic.main.activity_pet_crud.S
+import kotlinx.android.synthetic.main.activity_pet_crud.address
+import kotlinx.android.synthetic.main.activity_pet_crud.btnPrimary
+import kotlinx.android.synthetic.main.activity_pet_crud.descri
+import kotlinx.android.synthetic.main.activity_pet_crud.fullname
+import kotlinx.android.synthetic.main.activity_pet_crud.latitude
+import kotlinx.android.synthetic.main.activity_pet_crud.longitude
+import kotlinx.android.synthetic.main.activity_pet_crud.pet_ag
+import kotlinx.android.synthetic.main.activity_pet_crud.pet_we
+import kotlinx.android.synthetic.main.activity_pet_crud.vaksin_no
+import kotlinx.android.synthetic.main.activity_pet_crud.vaksin_yes
 import java.util.*
 
 class PetCRUD : AppCompatActivity() {
@@ -23,6 +43,7 @@ class PetCRUD : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pet_crud)
+        val ID: String? = intent.extras?.getString("ID")
 
         val databaseHandler: DatabaseHandler = DatabaseHandler(this)
         val accID = databaseHandler.checkAccount()
@@ -85,6 +106,54 @@ class PetCRUD : AppCompatActivity() {
 
         val mySpinner = findViewById<View>(R.id.pettype) as Spinner
 
+        if(ID != "") {
+            var emp: List<PetModelClass> = databaseHandler.getPet("ID", ID!!)
+
+            topbar.text = "UPDATE YOUR PET"
+            btnPrimary.text = "UPDATE"
+            fullname.setText(emp[0].name)
+            address.setText(emp[0].address)
+            latitude.setText(emp[0].x)
+            longitude.setText(emp[0].y)
+            pet_ag.setText(emp[0].age)
+            pet_we.setText(emp[0].weight)
+            descri.setText(emp[0].desc)
+
+            when (emp[0].category) {
+                "Cat" ->  {
+                    catBtn.setBackgroundResource(R.drawable.btn_secondary)
+                    binding.pettype.adapter = ArrayAdapter(applicationContext, R.layout.spinner_text, arrayList_cat)
+                    category = "Cat"
+                }
+                "Dog" -> {
+                    dogBtn.setBackgroundResource(R.drawable.btn_secondary)
+                    binding.pettype.adapter = ArrayAdapter(applicationContext, R.layout.spinner_text, arrayList_dog)
+                    category = "Dog"
+                }
+            }
+            when (emp[0].sex) {
+                "Male" -> Male.isChecked = true
+                "Female" -> Female.isChecked = true
+            }
+            when (emp[0].size) {
+                "S" -> S.isChecked = true
+                "M" -> M.isChecked = true
+                "L" -> L.isChecked = true
+            }
+            when (emp[0].vaccine) {
+                "Yes" -> vaksin_yes.isChecked = true
+                "No" -> vaksin_no.isChecked = true
+            }
+            when (emp[0].type) {
+                "Persia" -> pettype.setSelection(0)
+                "Bengal" -> pettype.setSelection(1)
+                "Siberia" -> pettype.setSelection(2)
+                "Bulldog" -> pettype.setSelection(0)
+                "Pudel" -> pettype.setSelection(1)
+                "Husky" -> pettype.setSelection(2)
+            }
+        }
+
         btnPrimary.setOnClickListener {
             var name = fullname.text.toString()
             var location = address.text.toString()
@@ -95,12 +164,22 @@ class PetCRUD : AppCompatActivity() {
             var desc = descri.text.toString()
             if (name.trim().isNotEmpty() && location.trim().isNotEmpty() && x.trim().isNotEmpty() && y.trim().isNotEmpty()
                 && age.trim().isNotEmpty() && weight.trim().isNotEmpty() && desc.trim().isNotEmpty() && sex_checked && size_checked && vaccine_checked) {
-                if (databaseHandler.createAdopt(accID, name, category, location, x, y, sex, size, age, weight, mySpinner.selectedItem.toString(), vaccine, desc)) {
-                    Toast.makeText(this, "Sukses menambah data", Toast.LENGTH_SHORT).show();
-                    finish()
-                } else {
-                    Toast.makeText(this, "Error, harap coba lagi", Toast.LENGTH_SHORT).show();
-                }
+                    if(ID != "") {
+                        databaseHandler.createAdopt(ID.toInt(), name, category, location, x, y, sex, size, age, weight, mySpinner.selectedItem.toString(), vaccine, desc, "UPDATE")
+                        Toast.makeText(this, "Sukses mengupdate data", Toast.LENGTH_SHORT).show();
+                        val intent = Intent(this, MainActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    } else {
+                        if (databaseHandler.createAdopt(accID, name, category, location, x, y, sex, size, age, weight, mySpinner.selectedItem.toString(), vaccine, desc)) {
+                            Toast.makeText(this, "Sukses menambah data", Toast.LENGTH_SHORT).show();
+                            val intent = Intent(this, MainActivity::class.java)
+                            startActivity(intent)
+                            finish()
+                        } else {
+                            Toast.makeText(this, "Error, harap coba lagi", Toast.LENGTH_SHORT).show();
+                        }
+                    }
             } else {
                 Toast.makeText(this, "Mohon isi semua kolom", Toast.LENGTH_SHORT).show();
             }
