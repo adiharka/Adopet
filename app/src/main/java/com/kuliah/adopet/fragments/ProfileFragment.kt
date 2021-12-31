@@ -51,6 +51,10 @@ class AccountFragment : Fragment() {
             val intent = Intent(context, ProfileUpdate::class.java)
             startActivity(intent)
         }
+        view.your_pet.setOnClickListener{
+            val intent = Intent(context, PetAdded::class.java)
+            startActivity(intent)
+        }
 
         view.logoutBtn.setOnClickListener {
             databaseHandler.logoutAccount(accID)

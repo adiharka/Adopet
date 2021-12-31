@@ -15,6 +15,9 @@
         android:theme="@style/Theme.Adopet"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".PetAdded"
+            android:exported="false" />
+        <activity
             android:name=".PetUpdate"
             android:exported="false" />
         <activity
