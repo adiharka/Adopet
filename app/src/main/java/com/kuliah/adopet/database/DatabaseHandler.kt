@@ -3,8 +3,10 @@ package com.kuliah.adopet.database
 import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
+import android.database.sqlite.SQLiteException
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
+import com.kuliah.adopet.model.PetModelClass
 
 class DatabaseHandler(context: Context): SQLiteOpenHelper(context,
     DATABASE_NAME,null,
@@ -240,5 +242,49 @@ class DatabaseHandler(context: Context): SQLiteOpenHelper(context,
         }
         db.close()
         return true
+    }
+
+    // GET list pet
+    fun getPet(Filter:String="",AccID:String=""): List<PetModelClass> {
+        val empList: ArrayList<PetModelClass> = ArrayList<PetModelClass>()
+        var selectQuery = "SELECT * FROM $TABLE_PET "
+        if (Filter == "Dog") {
+            selectQuery = "SELECT * FROM $TABLE_PET WHERE $KEY_CATEGORY = 'Dog';"
+        } else if (Filter == "Cat") {
+            selectQuery = "SELECT * FROM $TABLE_PET WHERE $KEY_CATEGORY = 'Cat';"
+        } else if (Filter == "Account") {
+            selectQuery = "SELECT * FROM $TABLE_PET WHERE $KEY_PET_ACCOUNT_ID = $AccID;"
+        }
+        val db = this.readableDatabase
+        var cursor: Cursor? = null
+        try {
+            cursor = db.rawQuery(selectQuery, null)
+        } catch (e: SQLiteException) {
+            db.execSQL(selectQuery)
+            return ArrayList()
+        }
+        if (cursor.moveToFirst()) {
+            do {
+                val emp = PetModelClass(
+                    accID = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_PET_ACCOUNT_ID)),
+                    id = cursor.getInt(cursor.getColumnIndexOrThrow(KEY_PET_ID)),
+                    name = cursor.getString(cursor.getColumnIndexOrThrow(KEY_NAME)) ,
+                    category = cursor.getString(cursor.getColumnIndexOrThrow(KEY_CATEGORY)),
+                    address = cursor.getString(cursor.getColumnIndexOrThrow(KEY_ADDRESS)),
+                    x = cursor.getString(cursor.getColumnIndexOrThrow(KEY_X)),
+                    y = cursor.getString(cursor.getColumnIndexOrThrow(KEY_Y)),
+                    sex = cursor.getString(cursor.getColumnIndexOrThrow(KEY_SEX)),
+                    size = cursor.getString(cursor.getColumnIndexOrThrow(KEY_SIZE)),
+                    age = cursor.getString(cursor.getColumnIndexOrThrow(KEY_AGE)),
+                    weight = cursor.getString(cursor.getColumnIndexOrThrow(KEY_WEIGHT)),
+                    type = cursor.getString(cursor.getColumnIndexOrThrow(KEY_TYPE)),
+                    desc = cursor.getString(cursor.getColumnIndexOrThrow(KEY_DESCRIPTION)),
+                )
+                empList.add(emp)
+            } while (cursor.moveToNext())
+        }
+        cursor.close()
+        db.close()
+        return empList
     }
 }

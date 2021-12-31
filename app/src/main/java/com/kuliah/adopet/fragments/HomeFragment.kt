@@ -1,14 +1,21 @@
 package com.kuliah.adopet.fragments
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import com.kuliah.adopet.PetCRUD
 import com.kuliah.adopet.PetDetail
 import com.kuliah.adopet.R
+import com.kuliah.adopet.adapter.PetListAdapter
+import com.kuliah.adopet.database.DatabaseHandler
+import com.kuliah.adopet.model.PetModelClass
+import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_home.view.*
 
 // TODO: Rename parameter arguments, choose names that match
@@ -42,10 +49,42 @@ class HomeFragment : Fragment() {
         // Inflate the layout for this fragment
         val view: View = inflater.inflate(R.layout.fragment_home, container, false)
 
-        view.details.setOnClickListener{
+        //creating the instance of DatabaseHandler class
+        val databaseHandler: DatabaseHandler = DatabaseHandler(requireContext())
+        var listView = view.pet_listview
+
+        var emp: List<PetModelClass> = databaseHandler.getPet("Cat")
+        listView.adapter = PetListAdapter(requireContext(),R.layout.pet_list,emp, databaseHandler.checkAccount())
+        Log.d("CREATION", "Bikin listview")
+
+        view.ccat.setOnClickListener {
+            emp = databaseHandler.getPet("Cat")
+            listView.adapter = PetListAdapter(requireContext(),R.layout.pet_list,emp, databaseHandler.checkAccount())
+            view.ccat.setTextColor(Color.parseColor("#ffffff"))
+            view.ddog.setTextColor(Color.parseColor("#4B3588"))
+            view.ddog.setBackgroundResource(R.drawable.btn_tertiary)
+            view.ccat.setBackgroundResource(R.drawable.btn_primary)
+        }
+        view.ddog.setOnClickListener {
+            emp = databaseHandler.getPet("Dog")
+            listView.adapter = PetListAdapter(requireContext(),R.layout.pet_list,emp, databaseHandler.checkAccount())
+            view.ddog.setTextColor(Color.parseColor("#ffffff"))
+            view.ccat.setTextColor(Color.parseColor("#4B3588"))
+            view.ccat.setBackgroundResource(R.drawable.btn_tertiary)
+            view.ddog.setBackgroundResource(R.drawable.btn_primary)
+        }
+
+        listView.setOnItemClickListener{parent, view, position, id ->
+//            Log.d("CREATION", forum_id)
             val intent = Intent(context, PetDetail::class.java)
+//            intent.putExtra("forum_id",forum_id.text.toString());
             startActivity(intent)
         }
+//
+//        view.details.setOnClickListener{
+//            val intent = Intent(context, PetDetail::class.java)
+//            startActivity(intent)
+//        }
 
         view.addBtn.setOnClickListener{
             val intent = Intent(context, PetCRUD::class.java)

@@ -90,12 +90,12 @@ class PetCRUD : AppCompatActivity() {
             var location = address.text.toString()
             var x = latitude.text.toString()
             var y = longitude.text.toString()
-            var age = Pet_Age.text.toString()
-            var weight = Pet_weig.text.toString()
+            var age = pet_ag.text.toString()
+            var weight = pet_we.text.toString()
             var desc = descri.text.toString()
             if (name.trim().isNotEmpty() && location.trim().isNotEmpty() && x.trim().isNotEmpty() && y.trim().isNotEmpty()
                 && age.trim().isNotEmpty() && weight.trim().isNotEmpty() && desc.trim().isNotEmpty() && sex_checked && size_checked && vaccine_checked) {
-                if (databaseHandler.createAdopt(accID, category, name, location, x, y, sex, size, age, weight, mySpinner.selectedItem.toString(), vaccine, desc)) {
+                if (databaseHandler.createAdopt(accID, name, category, location, x, y, sex, size, age, weight, mySpinner.selectedItem.toString(), vaccine, desc)) {
                     Toast.makeText(this, "Sukses menambah data", Toast.LENGTH_SHORT).show();
                     finish()
                 } else {
