@@ -230,6 +230,25 @@ class DatabaseHandler(context: Context): SQLiteOpenHelper(context,
         return phoneAccount
     }
 
+
+    fun getPass(id: Int): String {
+        val db = this.readableDatabase
+
+        val getQuery = "SELECT * FROM $TABLE_ACCOUNT WHERE $KEY_ACCOUNT_ID = $id;"
+        val cursor: Cursor = db.rawQuery(getQuery, null)
+        var passAccount = ""
+        if (cursor.count > 0) {
+            if (cursor.moveToFirst()) {
+                do {
+                    passAccount = cursor.getString(cursor.getColumnIndexOrThrow(KEY_PASSWORD))
+                } while (cursor.moveToNext())
+            }
+        }
+        cursor.close()
+        db.close()
+        return passAccount
+    }
+
     // Create new Pet
     fun createAdopt(accID:Int, name: String, category: String, address: String, x:String, y:String,
                     sex: String, size: String, age: String, weight: String, type: String, vaccine: String,

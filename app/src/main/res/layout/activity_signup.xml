@@ -73,6 +73,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
                 android:hint="Your Email"
+                android:inputType="textEmailAddress"
+                android:maxLines="1"
                 android:textSize="13sp"
                 android:textColorHint="#DCDCDC" />
         </LinearLayout>
@@ -97,6 +99,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
                 android:hint="Your Username"
+                android:inputType="text"
+                android:maxLines="1"
                 android:textSize="13sp"
                 android:textColorHint="#DCDCDC" />
         </LinearLayout>
@@ -122,6 +126,7 @@
                 android:layout_height="35dp"
                 android:inputType="textPassword"
                 android:hint="Your Password"
+                android:maxLines="1"
                 android:textSize="13sp"
                 android:textColorHint="#DCDCDC" />
         </LinearLayout>

@@ -28,12 +28,18 @@ class ProfileUpdate : AppCompatActivity() {
         val databaseHandler: DatabaseHandler = DatabaseHandler(this)
         val accID = databaseHandler.checkAccount()
 
+        uname.setText(databaseHandler.getUname(accID))
+        password.setText(databaseHandler.getPass(accID))
+        phone.setText(databaseHandler.getPhone(accID))
+
         updateBtn.setOnClickListener {
             val uname = uname.text.toString()
             val password = password.text.toString()
             val phone = phone.text.toString()
-            if (databaseHandler.updateAccount(accID, uname, password, phone)) {
+            if (databaseHandler.updateAccount(accID, password, uname, phone)) {
                 Toast.makeText(this, "Sukses update profil", Toast.LENGTH_SHORT).show();
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
                 finish()
             } else {
                 Toast.makeText(this, "Error, harap coba lagi", Toast.LENGTH_SHORT).show();

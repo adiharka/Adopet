@@ -515,7 +515,7 @@
                 android:layout_marginTop="8dp"
                 android:background="@drawable/form"
                 android:drawablePadding="10dp"
-                android:inputType="text"
+                android:inputType="text|textMultiLine"
                 android:paddingLeft="16dp"
                 android:hint="Write your pet description"
                 android:textAlignment="textStart"
