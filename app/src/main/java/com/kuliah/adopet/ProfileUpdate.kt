@@ -36,13 +36,18 @@ class ProfileUpdate : AppCompatActivity() {
             val uname = uname.text.toString()
             val password = password.text.toString()
             val phone = phone.text.toString()
-            if (databaseHandler.updateAccount(accID, password, uname, phone)) {
-                Toast.makeText(this, "Sukses update profil", Toast.LENGTH_SHORT).show();
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
-                finish()
-            } else {
-                Toast.makeText(this, "Error, harap coba lagi", Toast.LENGTH_SHORT).show();
+            if (uname.trim().isNotEmpty() && password.trim().isNotEmpty() && phone.trim().isNotEmpty()) {
+                if (databaseHandler.updateAccount(accID, password, uname, phone)) {
+                    Toast.makeText(this, "Sukses update profil", Toast.LENGTH_SHORT).show();
+                    val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                } else {
+                    Toast.makeText(this, "Error, harap coba lagi", Toast.LENGTH_SHORT).show();
+                }
+            }
+            else {
+                Toast.makeText(this, "Mohon isi semua kolom", Toast.LENGTH_SHORT).show();
             }
         }
         cancel_button.setOnClickListener {

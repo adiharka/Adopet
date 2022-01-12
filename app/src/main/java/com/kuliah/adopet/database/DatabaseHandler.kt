@@ -120,16 +120,28 @@ class DatabaseHandler(context: Context): SQLiteOpenHelper(context,
 
         val getQuery = "SELECT * FROM $TABLE_ACCOUNT WHERE $KEY_EMAIL = '$email';"
         val cursor: Cursor = db.rawQuery(getQuery, null)
-        var res = true
+        var passAccount = ""
         if (cursor.count > 0) {
-            val updateQuery =
-                "UPDATE $TABLE_ACCOUNT SET $KEY_LOGGED_IN = 1 WHERE $KEY_EMAIL = '$email' ;"
-            val cursor2 = db.rawQuery(updateQuery, null)
-            try {
-                if (cursor2.moveToFirst()) {
+            if (cursor.moveToFirst()) {
+                do {
+                    passAccount = cursor.getString(cursor.getColumnIndexOrThrow(KEY_PASSWORD))
+                } while (cursor.moveToNext())
+            }
+        }
+        var res = true
+        if (passAccount == pass) {
+            if (cursor.count > 0) {
+                val updateQuery =
+                    "UPDATE $TABLE_ACCOUNT SET $KEY_LOGGED_IN = 1 WHERE $KEY_EMAIL = '$email' ;"
+                val cursor2 = db.rawQuery(updateQuery, null)
+                try {
+                    if (cursor2.moveToFirst()) {
+                    }
+                } finally {
+                    cursor2.close()
                 }
-            } finally {
-                cursor2.close()
+            } else {
+                res = false
             }
         } else {
             res = false
